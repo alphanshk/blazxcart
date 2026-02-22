@@ -1,16 +1,16 @@
-# BlazxCart - Full Stack PHP + MySQL E-Commerce
+# BlazxCart - Multi-Vendor E-Commerce (Core PHP + MySQL)
 
-BlazxCart is a production-ready **Core PHP** e-commerce system with three roles:
+BlazxCart is a production-ready **Core PHP** multi-vendor e-commerce platform with three roles:
 - **Admin**
 - **Seller**
 - **User**
 
-It includes one common authentication page, role-based dashboards, seller approvals, product/catalog management, cart + checkout, order history/tracking, pagination, filters, secure uploads, and core security hardening.
+It uses one shared login flow, secure session-based authentication, role-based access control, seller approvals, product management, shopping cart + checkout, order history/tracking, category management, and responsive Bootstrap UI.
 
-## Stack
-- Frontend: HTML, CSS, JavaScript, Bootstrap 5
+## Tech Stack
+- Frontend: HTML5, CSS3, JavaScript, Bootstrap 5
 - Backend: Core PHP (no framework)
-- DB: MySQL + PDO prepared statements
+- Database: MySQL (PDO)
 
 ## Project Structure
 
@@ -41,41 +41,75 @@ It includes one common authentication page, role-based dashboards, seller approv
 |-- uploads/
 |-- database/
 |   |-- ecommerce.sql
+|-- index.php
 ```
 
-## Setup Guide
-1. Create database/tables:
-   - Import `database/ecommerce.sql` into MySQL.
-2. Update DB credentials in `config/db.php`.
-3. Run PHP server from project root:
+## Features by Role
+
+### Admin
+- Dashboard statistics (users, sellers, products, orders, revenue)
+- Approve / block sellers
+- Block / activate users
+- Manage categories
+- View all orders and update order status
+
+### Seller
+- Add / edit / delete products
+- Secure image upload (JPG/PNG/WEBP)
+- Inventory/stock management
+- View orders containing own products
+
+### User
+- Browse products
+- Search and category filter
+- Pagination
+- Cart management
+- Secure checkout and order creation
+- Order history/tracking
+- Profile management
+
+## Security Implemented
+- Password hashing with `password_hash()`
+- Login verification with `password_verify()`
+- Session regeneration on login
+- Session inactivity timeout auto-logout
+- CSRF protection for all POST forms
+- PDO prepared statements (SQL injection protection)
+- Input validation + output escaping (`htmlspecialchars`)
+- Secure upload checks (size + MIME)
+
+## Installation Guide
+
+1. **Create database and tables**
+   - Import SQL file:
+   ```bash
+   mysql -u root -p < database/ecommerce.sql
+   ```
+
+2. **Configure database credentials**
+   - Edit `config/db.php`:
+   - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`
+
+3. **Run the application**
    ```bash
    php -S 0.0.0.0:8000
    ```
-4. Open:
-   - `http://localhost:8000/auth/login.php`
-5. Default admin login:
+
+4. **Open in browser**
+   - Common login page: `http://localhost:8000/auth/login.php`
+
+5. **Default admin credentials**
    - Email: `admin@blazxcart.com`
    - Password: `Admin@123`
 
-## Security Implemented
-- Password hashing: `password_hash()`
-- Password verify: `password_verify()`
-- Session auth + `session_regenerate_id()`
-- Role-based access control checks
-- CSRF token validation on POST forms
-- Input validation + output escaping (`htmlspecialchars`)
-- PDO prepared statements
-- File upload validation (size + MIME checks)
+## Authentication Flow
+- All roles login from `/auth/login.php`
+- Redirect by role:
+  - `admin` → `/admin/dashboard.php`
+  - `seller` → `/seller/dashboard.php`
+  - `user` → `/user/home.php`
 
-## Role Routing
-After common login (`/auth/login.php`):
-- admin → `/admin/dashboard.php`
-- seller → `/seller/dashboard.php`
-- user → `/user/home.php`
-
-## Feature Notes
-- Seller registration defaults to `pending` and needs Admin approval.
-- Admin can approve/block sellers and block users.
-- Seller can CRUD products and upload validated images.
-- User can browse, filter/search, add to cart, checkout, and track orders.
-
+## Notes
+- Admin accounts are manually managed via DB seed.
+- Seller registrations are created with `pending` status and must be approved by admin.
+- Checkout performs stock validation in a DB transaction and updates inventory safely.

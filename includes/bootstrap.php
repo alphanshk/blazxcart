@@ -1,9 +1,29 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
 
+const SESSION_TIMEOUT_SECONDS = 1800;
+
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    if (PHP_VERSION_ID >= 70300) {
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => '',
+            'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
     session_start();
 }
+
+if (isset($_SESSION['last_activity']) && (time() - (int) $_SESSION['last_activity']) > SESSION_TIMEOUT_SECONDS) {
+    session_unset();
+    session_destroy();
+    session_start();
+    set_flash('warning', 'Session expired. Please login again.');
+}
+$_SESSION['last_activity'] = time();
 
 function base_url(string $path = ''): string
 {

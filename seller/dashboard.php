@@ -27,7 +27,11 @@ function upload_product_image(array $file): ?string
     }
 
     $name = bin2hex(random_bytes(16)) . '.' . $allowed[$mime];
-    $target = __DIR__ . '/../uploads/' . $name;
+    $uploadDir = __DIR__ . '/../uploads';
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true) && !is_dir($uploadDir)) {
+        throw new RuntimeException('Upload directory is not writable.');
+    }
+    $target = $uploadDir . '/' . $name;
     if (!move_uploaded_file($file['tmp_name'], $target)) {
         throw new RuntimeException('Could not save uploaded image.');
     }

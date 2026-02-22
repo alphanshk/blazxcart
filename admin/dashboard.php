@@ -31,9 +31,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'add_category') {
         $name = trim($_POST['name'] ?? '');
         if ($name !== '') {
-            $stmt = $pdo->prepare('INSERT INTO categories (name) VALUES (?)');
+            $stmt = $pdo->prepare('INSERT IGNORE INTO categories (name) VALUES (?)');
             $stmt->execute([$name]);
-            set_flash('success', 'Category added.');
+            set_flash('success', $stmt->rowCount() ? 'Category added.' : 'Category already exists.');
+        }
+    }
+
+    if ($action === 'order_status') {
+        $orderId = (int) ($_POST['order_id'] ?? 0);
+        $status = $_POST['status'] ?? 'pending';
+        if ($orderId > 0 && in_array($status, ['pending', 'paid', 'shipped', 'delivered', 'cancelled'], true)) {
+            $stmt = $pdo->prepare('UPDATE orders SET status=? WHERE id=?');
+            $stmt->execute([$status, $orderId]);
+            set_flash('success', 'Order status updated.');
         }
     }
 
@@ -108,7 +118,21 @@ render_header('Admin Dashboard');
 <div class="table-responsive mb-4">
 <table class="table table-sm table-striped"><tr><th>#</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th></tr>
 <?php foreach ($orders as $order): ?>
-<tr><td><?= (int)$order['id'] ?></td><td><?= h($order['customer']) ?></td><td>$<?= number_format((float)$order['total_amount'],2) ?></td><td><?= h($order['status']) ?></td><td><?= h($order['created_at']) ?></td></tr>
+<tr>
+<td><?= (int)$order['id'] ?></td><td><?= h($order['customer']) ?></td><td>$<?= number_format((float)$order['total_amount'],2) ?></td>
+<td>
+<form method="POST" class="d-flex gap-1">
+<input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
+<input type="hidden" name="action" value="order_status">
+<input type="hidden" name="order_id" value="<?= (int)$order['id'] ?>">
+<select name="status" class="form-select form-select-sm">
+<?php foreach (['pending','paid','shipped','delivered','cancelled'] as $status): ?>
+<option value="<?= h($status) ?>" <?= $order['status'] === $status ? 'selected' : '' ?>><?= h(ucfirst($status)) ?></option>
+<?php endforeach; ?>
+</select>
+<button class="btn btn-sm btn-dark">Save</button>
+</form>
+</td><td><?= h($order['created_at']) ?></td></tr>
 <?php endforeach; ?></table>
 </div>
 
