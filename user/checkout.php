@@ -105,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 render_header('Checkout');
 ?>
-<h4 class="mb-3">Checkout</h4>
+<div class="page-hero"><h4 class="mb-1">Secure Checkout</h4><p class="text-muted mb-0">Review your order details before placing your order.</p></div>
 <div class="row g-4">
     <div class="col-lg-8">
         <div class="table-responsive">

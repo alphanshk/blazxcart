@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 render_header('Shop');
 ?>
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>Browse Products</h4>
+    <div><h4 class="mb-0">Browse Products</h4><small class="text-muted">Find products from approved sellers</small></div>
     <div class="d-flex gap-2">
         <a href="/user/cart.php" class="btn btn-dark">Cart (<?= array_sum($_SESSION['cart'] ?? []) ?>)</a>
         <a href="/user/orders.php" class="btn btn-outline-dark">Order History</a>

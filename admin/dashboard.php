@@ -65,10 +65,11 @@ $orders = $pdo->query("SELECT o.id, o.total_amount, o.status, o.created_at, u.na
 
 render_header('Admin Dashboard');
 ?>
+<div class="page-hero"><h4 class="mb-1">Admin Control Center</h4><p class="text-muted mb-0">Monitor platform health, manage users/sellers, and process orders.</p></div>
 <div class="row g-3 mb-4">
     <?php foreach ($stats as $label => $value): ?>
         <div class="col-md-2">
-            <div class="card"><div class="card-body"><small><?= h(ucfirst($label)) ?></small><h5><?= h((string)$value) ?></h5></div></div>
+            <div class="card stat-card"><div class="card-body"><small class="text-muted"><?= h(ucfirst($label)) ?></small><h5><?= h((string)$value) ?></h5></div></div>
         </div>
     <?php endforeach; ?>
 </div>

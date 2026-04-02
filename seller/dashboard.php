@@ -109,6 +109,7 @@ $orders = $orders->fetchAll();
 
 render_header('Seller Dashboard');
 ?>
+<div class="page-hero"><h4 class="mb-1">Seller Workspace</h4><p class="text-muted mb-0">Manage your catalog, pricing, stock, and fulfillment visibility from one screen.</p></div>
 <div class="row g-4">
     <div class="col-lg-4">
         <div class="card"><div class="card-body">
