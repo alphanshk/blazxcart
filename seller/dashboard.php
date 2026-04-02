@@ -27,7 +27,11 @@ function upload_product_image(array $file): ?string
     }
 
     $name = bin2hex(random_bytes(16)) . '.' . $allowed[$mime];
-    $target = __DIR__ . '/../uploads/' . $name;
+    $uploadDir = __DIR__ . '/../uploads';
+    if (!is_dir($uploadDir) && !mkdir($uploadDir, 0755, true) && !is_dir($uploadDir)) {
+        throw new RuntimeException('Upload directory is not writable.');
+    }
+    $target = $uploadDir . '/' . $name;
     if (!move_uploaded_file($file['tmp_name'], $target)) {
         throw new RuntimeException('Could not save uploaded image.');
     }
@@ -105,6 +109,7 @@ $orders = $orders->fetchAll();
 
 render_header('Seller Dashboard');
 ?>
+<div class="page-hero"><h4 class="mb-1">Seller Workspace</h4><p class="text-muted mb-0">Manage your catalog, pricing, stock, and fulfillment visibility from one screen.</p></div>
 <div class="row g-4">
     <div class="col-lg-4">
         <div class="card"><div class="card-body">
@@ -137,13 +142,13 @@ render_header('Seller Dashboard');
                 <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr>
                 <?php foreach ($products as $p): ?>
                 <tr>
-                    <td><?php if($p['image']): ?><img src="/uploads/<?= h($p['image']) ?>" width="45" alt=""><?php endif; ?></td>
+                    <td><?php if($p['image']): ?><img src="<?= h(base_url('/uploads/' . $p['image'])) ?>" width="45" alt=""><?php endif; ?></td>
                     <td><?= h($p['name']) ?></td>
                     <td><?= h($p['category_name'] ?? 'N/A') ?></td>
                     <td>$<?= number_format((float)$p['price'],2) ?></td>
                     <td><?= (int)$p['stock'] ?></td>
                     <td class="d-flex gap-1">
-                        <a href="/seller/dashboard.php?edit=<?= (int)$p['id'] ?>" class="btn btn-sm btn-outline-dark">Edit</a>
+                        <a href="<?= h(base_url('/seller/dashboard.php')) ?>?edit=<?= (int)$p['id'] ?>" class="btn btn-sm btn-outline-dark">Edit</a>
                         <form method="POST">
                             <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
                             <input type="hidden" name="action" value="delete">

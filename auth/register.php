@@ -35,9 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 render_header('Register');
 ?>
+<div class="page-hero">
+    <h4 class="mb-1">Create BlazxCart Account</h4>
+    <p class="text-muted mb-0">Open a buyer account instantly or register as a seller for approval.</p>
+</div>
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card shadow-sm">
+        <div class="card">
             <div class="card-body p-4">
                 <h3>Create BlazxCart Account</h3>
                 <form method="POST">

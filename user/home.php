@@ -55,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 render_header('Shop');
 ?>
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h4>Browse Products</h4>
+    <div><h4 class="mb-0">Browse Products</h4><small class="text-muted">Find products from approved sellers</small></div>
     <div class="d-flex gap-2">
-        <a href="/user/cart.php" class="btn btn-dark">Cart (<?= array_sum($_SESSION['cart'] ?? []) ?>)</a>
-        <a href="/user/orders.php" class="btn btn-outline-dark">Order History</a>
-        <a href="/user/profile.php" class="btn btn-outline-secondary">Profile</a>
+        <a href="<?= h(base_url('/user/cart.php')) ?>" class="btn btn-dark">Cart (<?= array_sum($_SESSION['cart'] ?? []) ?>)</a>
+        <a href="<?= h(base_url('/user/orders.php')) ?>" class="btn btn-outline-dark">Order History</a>
+        <a href="<?= h(base_url('/user/profile.php')) ?>" class="btn btn-outline-secondary">Profile</a>
     </div>
 </div>
 <form class="row g-2 mb-3">
@@ -71,7 +71,7 @@ render_header('Shop');
 <?php foreach ($products as $p): ?>
     <div class="col-md-3">
         <div class="card product-card h-100">
-            <?php if ($p['image']): ?><img src="/uploads/<?= h($p['image']) ?>" class="card-img-top" alt="<?= h($p['name']) ?>"><?php endif; ?>
+            <?php if ($p['image']): ?><img src="<?= h(base_url('/uploads/' . $p['image'])) ?>" class="card-img-top" alt="<?= h($p['name']) ?>"><?php endif; ?>
             <div class="card-body">
                 <h6><?= h($p['name']) ?></h6>
                 <small class="text-muted"><?= h($p['category_name'] ?? 'Uncategorized') ?> by <?= h($p['seller_name']) ?></small>

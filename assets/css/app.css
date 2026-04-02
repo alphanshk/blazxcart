@@ -1,3 +1,102 @@
-body { background: #f7f7fb; }
-.product-card img { height: 200px; object-fit: cover; }
-.table-responsive { background: #fff; border-radius: 0.5rem; padding: 1rem; }
+:root {
+  --bx-primary: #5b3df5;
+  --bx-accent: #ff7a18;
+  --bx-bg: #f4f6fb;
+  --bx-card: #ffffff;
+  --bx-text: #1f2937;
+}
+
+body {
+  background: radial-gradient(circle at top right, #eef1ff, #f8f9fc 45%, #f4f6fb 100%);
+  color: var(--bx-text);
+}
+
+.navbar {
+  background: linear-gradient(90deg, #111827, #1f2937) !important;
+}
+
+.brand-pill {
+  background: linear-gradient(120deg, var(--bx-primary), #7c5cff);
+  padding: 0.2rem 0.55rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-weight: 700;
+}
+
+.card,
+.table-responsive,
+.list-group-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 0.8rem;
+}
+
+.card {
+  box-shadow: 0 10px 25px rgba(17, 24, 39, 0.06);
+}
+
+.page-hero {
+  background: linear-gradient(115deg, #ffffff 5%, #eef1ff 95%);
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card {
+  border: none;
+  background: linear-gradient(145deg, #ffffff, #f6f8ff);
+}
+
+.stat-card h5 {
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.product-card {
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(91, 61, 245, 0.18);
+}
+
+.product-card img {
+  height: 220px;
+  object-fit: cover;
+}
+
+.table-responsive {
+  background: #fff;
+  padding: 0.75rem;
+}
+
+.table > :not(caption) > * > * {
+  vertical-align: middle;
+}
+
+.btn-primary,
+.btn-dark {
+  border: none;
+}
+
+.btn-primary {
+  background: linear-gradient(120deg, var(--bx-primary), #6d4dff);
+}
+
+.btn-success {
+  background: linear-gradient(120deg, #0ea05f, #17b26a);
+  border: none;
+}
+
+.badge-soft {
+  background: #ede9fe;
+  color: #4c1d95;
+  font-weight: 600;
+}
+
+.footer-note {
+  color: #6b7280;
+  font-size: 0.9rem;
+}

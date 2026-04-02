@@ -50,9 +50,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 render_header('Login');
 ?>
+<div class="page-hero">
+    <h4 class="mb-1">One Login for BlazxCart</h4>
+    <p class="text-muted mb-0">Access admin, seller, and buyer portals from one secure sign-in.</p>
+</div>
 <div class="row justify-content-center">
     <div class="col-md-5">
-        <div class="card shadow-sm">
+        <div class="card">
             <div class="card-body p-4">
                 <h3 class="mb-3">One Login for BlazxCart</h3>
                 <form method="POST">
@@ -67,7 +71,7 @@ render_header('Login');
                     </div>
                     <button class="btn btn-dark w-100">Login</button>
                 </form>
-                <p class="small mt-3 mb-0">No account? <a href="/auth/register.php">Register as User/Seller</a></p>
+                <p class="small mt-3 mb-0">No account? <a href="<?= h(base_url('/auth/register.php')) ?>">Register as User/Seller</a></p>
             </div>
         </div>
     </div>

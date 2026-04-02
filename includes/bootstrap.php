@@ -1,13 +1,57 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/app.php';
+
+const SESSION_TIMEOUT_SECONDS = 1800;
 
 if (session_status() !== PHP_SESSION_ACTIVE) {
+    if (PHP_VERSION_ID >= 70300) {
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => '',
+            'secure' => (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+    }
     session_start();
+}
+
+if (isset($_SESSION['last_activity']) && (time() - (int) $_SESSION['last_activity']) > SESSION_TIMEOUT_SECONDS) {
+    session_unset();
+    session_destroy();
+    session_start();
+    set_flash('warning', 'Session expired. Please login again.');
+}
+$_SESSION['last_activity'] = time();
+
+function app_base_path(): string
+{
+    static $basePath = null;
+    if ($basePath !== null) {
+        return $basePath;
+    }
+
+    if (defined('APP_BASE_PATH') && APP_BASE_PATH !== '') {
+        $basePath = '/' . trim(APP_BASE_PATH, '/');
+        return $basePath;
+    }
+
+    $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+    if (preg_match('#^(.*)/(auth|admin|seller|user|includes|config|assets|uploads|database)/#', $scriptName, $matches)) {
+        $basePath = rtrim($matches[1], '/');
+    } else {
+        $basePath = '';
+    }
+
+    return $basePath;
 }
 
 function base_url(string $path = ''): string
 {
-    return $path;
+    $path = '/' . ltrim($path, '/');
+    return app_base_path() . $path;
 }
 
 function h(?string $value): string
@@ -60,7 +104,7 @@ function is_logged_in(): bool
 
 function redirect(string $to): void
 {
-    header('Location: ' . $to);
+    header('Location: ' . base_url($to));
     exit;
 }
 
