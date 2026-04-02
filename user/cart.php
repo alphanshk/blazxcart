@@ -65,6 +65,6 @@ render_header('Your Cart');
 </div>
 <div class="d-flex justify-content-between align-items-center">
 <h5>Total: $<?= number_format($total,2) ?></h5>
-<a href="/user/checkout.php" class="btn btn-success <?= $items ? '' : 'disabled' ?>">Proceed to Checkout</a>
+<a href="<?= h(base_url('/user/checkout.php')) ?>" class="btn btn-success <?= $items ? '' : 'disabled' ?>">Proceed to Checkout</a>
 </div>
 <?php render_footer(); ?>

@@ -25,9 +25,27 @@ if (isset($_SESSION['last_activity']) && (time() - (int) $_SESSION['last_activit
 }
 $_SESSION['last_activity'] = time();
 
+function app_base_path(): string
+{
+    static $basePath = null;
+    if ($basePath !== null) {
+        return $basePath;
+    }
+
+    $scriptName = str_replace('\\', '/', $_SERVER['SCRIPT_NAME'] ?? '');
+    if (preg_match('#^(.*)/(auth|admin|seller|user|includes|config|assets|uploads|database)/#', $scriptName, $matches)) {
+        $basePath = rtrim($matches[1], '/');
+    } else {
+        $basePath = '';
+    }
+
+    return $basePath;
+}
+
 function base_url(string $path = ''): string
 {
-    return $path;
+    $path = '/' . ltrim($path, '/');
+    return app_base_path() . $path;
 }
 
 function h(?string $value): string
@@ -80,7 +98,7 @@ function is_logged_in(): bool
 
 function redirect(string $to): void
 {
-    header('Location: ' . $to);
+    header('Location: ' . base_url($to));
     exit;
 }
 

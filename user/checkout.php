@@ -131,7 +131,7 @@ render_header('Checkout');
                     <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
                     <button class="btn btn-success w-100">Place Order</button>
                 </form>
-                <a href="/user/cart.php" class="btn btn-outline-dark w-100 mt-2">Back to Cart</a>
+                <a href="<?= h(base_url('/user/cart.php')) ?>" class="btn btn-outline-dark w-100 mt-2">Back to Cart</a>
             </div>
         </div>
     </div>

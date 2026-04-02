@@ -71,7 +71,7 @@ render_header('Login');
                     </div>
                     <button class="btn btn-dark w-100">Login</button>
                 </form>
-                <p class="small mt-3 mb-0">No account? <a href="/auth/register.php">Register as User/Seller</a></p>
+                <p class="small mt-3 mb-0">No account? <a href="<?= h(base_url('/auth/register.php')) ?>">Register as User/Seller</a></p>
             </div>
         </div>
     </div>

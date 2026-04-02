@@ -142,13 +142,13 @@ render_header('Seller Dashboard');
                 <tr><th>Image</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Action</th></tr>
                 <?php foreach ($products as $p): ?>
                 <tr>
-                    <td><?php if($p['image']): ?><img src="/uploads/<?= h($p['image']) ?>" width="45" alt=""><?php endif; ?></td>
+                    <td><?php if($p['image']): ?><img src="<?= h(base_url('/uploads/' . $p['image'])) ?>" width="45" alt=""><?php endif; ?></td>
                     <td><?= h($p['name']) ?></td>
                     <td><?= h($p['category_name'] ?? 'N/A') ?></td>
                     <td>$<?= number_format((float)$p['price'],2) ?></td>
                     <td><?= (int)$p['stock'] ?></td>
                     <td class="d-flex gap-1">
-                        <a href="/seller/dashboard.php?edit=<?= (int)$p['id'] ?>" class="btn btn-sm btn-outline-dark">Edit</a>
+                        <a href="<?= h(base_url('/seller/dashboard.php')) ?>?edit=<?= (int)$p['id'] ?>" class="btn btn-sm btn-outline-dark">Edit</a>
                         <form method="POST">
                             <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
                             <input type="hidden" name="action" value="delete">

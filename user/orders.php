@@ -16,5 +16,5 @@ render_header('Order History');
 <tr><td><?= (int)$o['id'] ?></td><td>$<?= number_format((float)$o['total_amount'],2) ?></td><td><span class="badge text-bg-info"><?= h($o['status']) ?></span></td><td><?= h($o['created_at']) ?></td></tr>
 <?php endforeach; ?>
 </table></div>
-<a href="/user/home.php" class="btn btn-outline-dark">Continue Shopping</a>
+<a href="<?= h(base_url('/user/home.php')) ?>" class="btn btn-outline-dark">Continue Shopping</a>
 <?php render_footer(); ?>
