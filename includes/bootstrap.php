@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../config/app.php';
 
 const SESSION_TIMEOUT_SECONDS = 1800;
 
@@ -29,6 +30,11 @@ function app_base_path(): string
 {
     static $basePath = null;
     if ($basePath !== null) {
+        return $basePath;
+    }
+
+    if (defined('APP_BASE_PATH') && APP_BASE_PATH !== '') {
+        $basePath = '/' . trim(APP_BASE_PATH, '/');
         return $basePath;
     }
 

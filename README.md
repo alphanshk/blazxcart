@@ -17,6 +17,7 @@ It uses one shared login flow, secure session-based authentication, role-based a
 ```
 /
 |-- config/
+|   |-- app.php
 |   |-- db.php
 |-- auth/
 |   |-- login.php
@@ -86,19 +87,23 @@ It uses one shared login flow, secure session-based authentication, role-based a
    mysql -u root -p < database/ecommerce.sql
    ```
 
-2. **Configure database credentials**
+2. **Configure application path**
+   - Edit `config/app.php`:
+   - Set `APP_BASE_PATH` to your subfolder (default: `/blazxcart`)
+
+3. **Configure database credentials**
    - Edit `config/db.php`:
    - `DB_HOST`, `DB_NAME`, `DB_USER`, `DB_PASS`
 
-3. **Run the application**
+4. **Run the application**
    ```bash
    php -S 0.0.0.0:8000
    ```
 
-4. **Open in browser**
+5. **Open in browser**
    - Common login page: `http://localhost:8000/auth/login.php`
 
-5. **Default admin credentials**
+6. **Default admin credentials**
    - Email: `admin@blazxcart.com`
    - Password: `Admin@123`
 
